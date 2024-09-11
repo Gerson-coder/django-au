@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-white">Ranking de Miembros</h1>
+    <p class="text-center text-muted mb-5">Consulta la clasificación de los miembros por sus puntos acumulados en eventos.</p>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-hover text-center align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Posición</th>
+                    <th scope="col">Nickname</th>
+                    <th scope="col">Puntos Acumulados</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Miembro en primera posición destacado -->
+                <tr class="table-warning">
+                    <th scope="row" class="fs-4">1</th>
+                    <td class="fs-4"><strong>{{ member1.nickname }}</strong></td>
+                    <td class="fs-4"><strong>{{ member1.points }} pts</strong></td>
+                </tr>
+                <!-- Miembro en segunda posición destacado -->
+                <tr class="table-secondary">
+                    <th scope="row" class="fs-4">2</th>
+                    <td class="fs-4"><strong>{{ member2.nickname }}</strong></td>
+                    <td class="fs-4"><strong>{{ member2.points }} pts</strong></td>
+                </tr>
+                <!-- Miembro en tercera posición destacado -->
+                <tr class="table-secondary">
+                    <th scope="row" class="fs-4">3</th>
+                    <td class="fs-4"><strong>{{ member3.nickname }}</strong></td>
+                    <td class="fs-4"><strong>{{ member3.points }} pts</strong></td>
+                </tr>
+                <!-- Miembros del 4to lugar en adelante -->
+                {% for member in members %}
+                <tr>
+                    <th scope="row">{{ forloop.counter0|add:4 }}</th>
+                    <td>{{ member.nickname }}</td>
+                    <td>{{ member.points }} pts</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Agregamos algo de estilo adicional -->
+<style>
+    .table-warning th, .table-warning td {
+        background-color: #f39c12 !important;
+    }
+
+    .table-secondary th, .table-secondary td {
+        background-color: #95a5a6 !important;
+    }
+
+    .text-white {
+        color: #f8f9fa !important;
+    }
+
+    .fs-4 {
+        font-size: 1.25rem;
+    }
+</style>
+{% endblock %}
