@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Restaurar Miembro Eliminado</h2>
+
+    <!-- Formulario para buscar y restaurar miembros -->
+    <form method="POST" action="{% url 'restart_member' %}">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+            <label for="nickname" class="form-label">Nickname del Miembro Eliminado</label>
+            <input type="text" id="nickname" name="nickname" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Restaurar Miembro</button>
+    </form>
+
+    {% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+    {% endif %}
+
+    {% if success %}
+    <div class="alert alert-success mt-3">{{ success }}</div>
+    {% endif %}
+</div>
+{% endblock %}

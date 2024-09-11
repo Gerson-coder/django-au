@@ -22,16 +22,19 @@
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li>
-                        <a href="/"  class="nav-link" >Inicio</a>
+                        <a href="/"  class="nav-link" >INICIO</a>
                     </li>
 
                     <li>
-                        <a href="/events"  class= "nav-link" >Eventos</a>
+                        <a href="/events"  class= "nav-link" >EVENTOS</a>
                     </li>
                     <li>
-                        <a href="/ranking"  class= "nav-link" >Ranking</a>
+                        <a href="/ranking"  class= "nav-link" >RANKING</a>
                     </li>
-                    
+
+                    <li>
+                        <a href="/members_fam " class = "nav-link"> MIEMBROS</a>
+                    </li>
 
 
                     
@@ -39,7 +42,7 @@
                     {% if user.is_authenticated %}
                    
                     <li class="nav-item">
-                        <a href="/logout"  class="nav-link">Salir</a>
+                        <a href="/logout"  class="nav-link">SALIR</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" >Hola, {{ user.username }}!</a>
@@ -48,12 +51,12 @@
                     
                     
                     <li class="nav-item">    
-                        <a href="/login" class="nav-link" >Ingresar</a>
+                        <a href="/login" class="nav-link" >INGRESAR</a>
                     </li>
                            
         
                     <li class="nav-item">
-                        <a href="/signup"   class="nav-link" > Registrarse</a>
+                        <a href="/signup"   class="nav-link" > REGISTRARSE</a>
                     </li >
                 </ul>
               </div>

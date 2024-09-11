@@ -1,12 +1,7 @@
-
-
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-
 {% block content %}
-
-
 <div class="container mt-5">
     <h1 class="text-center mb-4">Registrarse</h1>
 
@@ -23,62 +18,67 @@
         
         <!-- Nombre -->
         <div class="mb-3">
-            <label for="id_name" class="form-label">Nombre Completo</label>
+            <label for="id_name" class="form-label"></label>
             {{ form.name|as_crispy_field }}
         </div>
 
         <!-- Edad -->
         <div class="mb-3">
-            <label for="id_age" class="form-label">Edad</label>
+            <label for="id_age" class="form-label"></label>
             {{ form.age|as_crispy_field }}
         </div>
 
         <!-- Nickname -->
         <div class="mb-3">
-            <label for="id_nickname" class="form-label">Nickname</label>
+            <label for="id_nickname" class="form-label"></label>
             {{ form.nickname|as_crispy_field }}
         </div>
 
         <!-- Fecha de Cumpleaños -->
         <div class="mb-3">
-            <label for="id_happy_birthday" class="form-label">Fecha de Cumpleaños</label>
+            <label for="id_happy_birthday" class="form-label"></label>
             {{ form.happy_birthday|as_crispy_field }}
         </div>
 
         <!-- País -->
         <div class="mb-3">
-            <label for="id_country" class="form-label">País</label>
+            <label for="id_country" class="form-label"></label>
             {{ form.country|as_crispy_field }}
         </div>
 
         <!-- Ciudad -->
         <div class="mb-3">
-            <label for="id_city" class="form-label">Ciudad</label>
+            <label for="id_city" class="form-label"></label>
             {{ form.city|as_crispy_field }}
         </div>
 
         <!-- Estado de Pareja -->
         <div class="mb-3">
-            <label for="id_cpl_status" class="form-label">Estado de Relación</label>
+            <label for="id_cpl_status" class="form-label"></label>
             {{ form.cpl_status|as_crispy_field }}
         </div>
 
         <!-- Modo de Juego -->
         <div class="mb-3">
-            <label for="id_mode_play" class="form-label">Modo de Juego</label>
+            <label for="id_mode_play" class="form-label"></label>
             {{ form.mode_play|as_crispy_field }}
         </div>
 
         <!-- Contraseña 1 -->
         <div class="mb-3">
-            <label for="id_password1" class="form-label">Contraseña</label>
+            <label for="id_password1" class="form-label"></label>
             {{ form.password1|as_crispy_field }}
         </div>
 
         <!-- Contraseña 2 -->
         <div class="mb-3">
-            <label for="id_password2" class="form-label">Confirmar Contraseña</label>
+            <label for="id_password2" class="form-label"></label>
             {{ form.password2|as_crispy_field }}
+        </div>
+        <!-- Reclutado por -->
+        <div class="mb-3">
+            <label for="id_recruited" class="form-label"></label>
+            {{ form.recruited|as_crispy_field }}
         </div>
 
         <!-- Botón de envío -->

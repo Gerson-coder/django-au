@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Current Members</h2>
+
+    <!-- Barra de búsqueda -->
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Buscar por Nickname</span>
+        <input type="text" class="form-control" id="searchNickname" placeholder="Ingresa el nickname">
+    </div>
+
+    <!-- Tabla de miembros actuales -->
+    <table class="table table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Nickname</th>
+                <th scope="col">Recruited By</th>
+                <th scope="col">Join Date</th>
+            </tr>
+        </thead>
+        <tbody id="membersTable">
+            {% for member in members_fam %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ member.name }}</td>
+                <td>{{ member.nickname }}</td>
+                <td>{{ member.recruited.nickname }}</td>
+                <td>{{ member.date_joined|date:"d/m/Y H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No current members found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Script para filtrar por nickname -->
+<script>
+    document.getElementById('searchNickname').addEventListener('keyup', function() {
+        var input = this.value.toLowerCase();
+        var rows = document.querySelectorAll('#membersTable tr');
+
+        rows.forEach(function(row) {
+            var nickname = row.cells[2].textContent.toLowerCase(); // Columna 3 (Nickname)
+            if (nickname.indexOf(input) > -1) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}
