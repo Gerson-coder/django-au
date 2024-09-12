@@ -1,29 +1,31 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
 <div class="container mt-5">
-    <h2 class="mb-4">Current Members</h2>
+    <h2 class="text-center text-shadow-gothic text-white mb-4">Miembros Actuales</h2>
 
     <!-- Barra de búsqueda -->
     <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">Buscar por Nickname</span>
-        <input type="text" class="form-control" id="searchNickname" placeholder="Ingresa el nickname">
+        <span class="input-group-text bg-dark text-white" id="basic-addon1">Buscar por Nickname</span>
+        <input type="text" class="form-control bg-dark text-white" id="searchNickname" placeholder="Ingresa el nickname">
     </div>
 
     <!-- Tabla de miembros actuales -->
-    <table class="table table-hover table-bordered">
-        <thead class="table-dark">
-            <tr>
+    <table class="table table-hover table-dark table-bordered re-style-table">
+        <thead class="table-champion">
+            <tr class="gothic-text">
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
+                <th scope="col">Nombre</th>
                 <th scope="col">Nickname</th>
-                <th scope="col">Recruited By</th>
-                <th scope="col">Join Date</th>
+                <th scope="col">Reclutado Por</th>
+                <th scope="col">Fecha de Ingreso</th>
             </tr>
         </thead>
         <tbody id="membersTable">
             {% for member in members_fam %}
-            <tr>
+            <tr class="text-shadow">
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ member.name }}</td>
                 <td>{{ member.nickname }}</td>
@@ -32,11 +34,12 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="5" class="text-center">No current members found.</td>
+                <td colspan="5" class="text-center text-muted gothic-text">No se encontraron miembros actuales.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <link rel="stylesheet" href="{% static 'styles/members_fam.css' %}">
 </div>
 
 <!-- Script para filtrar por nickname -->
@@ -55,4 +58,16 @@
         });
     });
 </script>
+
+<!-- Estilos personalizados inspirados en Resident Evil Village -->
+<style>
+    body {
+        background-color: #FFFFFF;
+        background-image: url("{% static 'media/members.jpg' %}");
+        background-size: cover;
+        background-position: center;
+    }
+
+    
+</style>
 {% endblock %}

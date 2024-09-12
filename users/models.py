@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils import timezone
 
 # Create your models here.
@@ -20,6 +21,7 @@ class  Create_subs(models.Model):
 
 class Create_members(models.Model):
 
+    user = models.OneToOneField(User, on_delete=models.CASCADE,  null=True, blank=True)
     name = models.CharField(max_length=100)
     age = models.IntegerField()
     nickname = models.CharField(max_length=100)
@@ -30,6 +32,7 @@ class Create_members(models.Model):
     cpl_status = models.CharField(max_length=100)
     mode_play = models.CharField(max_length=100)
     recruited = models.ForeignKey(Create_subs, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)
     
 
 
@@ -49,6 +52,7 @@ class Members_eliminated(models.Model):
     reason = models.TextField()
     recruited = models.ForeignKey(Create_subs, on_delete=models.CASCADE)
     date_eliminate = models.DateTimeField()
+    is_active = models.BooleanField(default= False)
 
     def __str__(self):
         return self.name + ' by ' + self.nickname

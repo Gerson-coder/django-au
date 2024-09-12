@@ -1,31 +1,46 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container mt-5">
-    <!-- Slider de imágenes (Carousel) -->
+    <!-- Video Background -->
+    <video autoplay muted loop id="background-video">
+        <source src="{% static 'media/home.mp4' %}" type="video/mp4">
+        Tu navegador no soporta video en HTML5.
+    </video>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Bienvenidos a Village</h1>
+            <p>Sumérgete en el misterio y la oscuridad de nuestra familia.</p>
+        </div>
+    </div>
+
+    <!-- Carousel Section -->
     <div id="carouselExampleIndicators" class="carousel slide mb-5" data-bs-ride="carousel">
         <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></button>
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="https://example.com/slider1.jpg" class="d-block w-100" alt="Slider 1" style="height: 500px; object-fit: cover;">
+                <img src="{% static 'media/slider1.jpg' %}" class="d-block w-100" alt="Slider 1">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>¡Bienvenidos al Clan Void!</h5>
+                    <h2>BIENVENIDOS A VILLAGE</h2>
                     <p>Únete a nuestras aventuras y eventos</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="https://example.com/slider2.jpg" class="d-block w-100" alt="Slider 2" style="height: 500px; object-fit: cover;">
+                <img src="https://example.com/slider2.jpg" class="d-block w-100" alt="Slider 2">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Torneos Mensuales</h5>
                     <p>Demuestra tus habilidades y gana premios</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="https://example.com/slider3.jpg" class="d-block w-100" alt="Slider 3" style="height: 500px; object-fit: cover;">
+                <img src="https://example.com/slider3.jpg" class="d-block w-100" alt="Slider 3">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Eventos Exclusivos</h5>
                     <p>Forma equipo y participa en nuestras competiciones</p>
@@ -33,102 +48,15 @@
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Anterior</span>
+            <span class="carousel-control-prev-icon"></span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Siguiente</span>
+            <span class="carousel-control-next-icon"></span>
         </button>
     </div>
-
-    <!-- Encabezado principal -->
-    <h1 class="text-center text-white">Bienvenidos al Clan Void</h1>
-    <p class="text-center text-muted mb-5">Únete a la aventura y participa en nuestros eventos</p>
-
-    <!-- Sección de imágenes y eventos -->
-    <div class="row mb-4">
-        <!-- Imagen con enlace a eventos -->
-        <div class="col-md-4">
-            <div class="card bg-dark text-white">
-                <img src="https://example.com/event1.jpg" class="card-img" alt="Evento 1">
-                <div class="card-img-overlay d-flex flex-column justify-content-end">
-                    <h5 class="card-title">Evento Especial</h5>
-                    <p class="card-text">Participa en nuestro evento especial del mes.</p>
-                    <a href="/events" class="btn btn-primary">Ver más</a>
-                </div>
-            </div>
-        </div>
-        <!-- Imagen con enlace a eventos -->
-        <div class="col-md-4">
-            <div class="card bg-dark text-white">
-                <img src="https://example.com/event2.jpg" class="card-img" alt="Evento 2">
-                <div class="card-img-overlay d-flex flex-column justify-content-end">
-                    <h5 class="card-title">Torneo Competitivo</h5>
-                    <p class="card-text">Demuestra tus habilidades en nuestro torneo competitivo.</p>
-                    <a href="/events" class="btn btn-primary">Unirse ahora</a>
-                </div>
-            </div>
-        </div>
-        <!-- Imagen con enlace a eventos -->
-        <div class="col-md-4">
-            <div class="card bg-dark text-white">
-                <img src="https://example.com/event3.jpg" class="card-img" alt="Evento 3">
-                <div class="card-img-overlay d-flex flex-column justify-content-end">
-                    <h5 class="card-title">Batalla de Equipos</h5>
-                    <p class="card-text">Forma equipo con tus amigos y gana premios.</p>
-                    <a href="/events" class="btn btn-primary">Participar</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sección adicional de noticias o anuncios -->
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <h3 class="text-white">Últimas Noticias</h3>
-            <ul class="list-group">
-                <li class="list-group-item bg-dark text-white">Lanzamiento del nuevo mapa <span class="badge bg-primary">Nuevo</span></li>
-                <li class="list-group-item bg-dark text-white">Actualización de reglas para torneos</li>
-                <li class="list-group-item bg-dark text-white">Nuevas skins disponibles este mes</li>
-            </ul>
-        </div>
-        <div class="col-md-6">
-            <h3 class="text-white">Próximos Eventos</h3>
-            <ul class="list-group">
-                <li class="list-group-item bg-dark text-white">Torneo 1v1 - <em>Inicia el 15 de septiembre</em></li>
-                <li class="list-group-item bg-dark text-white">Evento de Clanes - <em>Inicia el 22 de septiembre</em></li>
-                <li class="list-group-item bg-dark text-white">Batalla Royale - <em>Inicia el 30 de septiembre</em></li>
-            </ul>
-        </div>
-    </div>
+    <link rel="stylesheet" href="{% static 'styles/home.css' %}">
 </div>
 
-<!-- Agrega un poco de estilo para darle más vida -->
-<style>
-    body {
-        background-image: url('https://example.com/background.jpg');
-        background-size: cover;
-        background-position: center;
-    }
-
-    .card-img {
-        height: 300px;
-        object-fit: cover;
-    }
-
-    .text-white {
-        color: #f8f9fa !important;
-    }
-
-    .btn-primary {
-        background-color: #3498db;
-        border: none;
-    }
-
-    .btn-primary:hover {
-        background-color: #2980b9;
-    }
-</style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 {% endblock %}

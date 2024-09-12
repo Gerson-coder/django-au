@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
 from .models import Create_members, Members_eliminated
-from .forms import FormMember
+from .forms import UserForm
 from django.http import JsonResponse
 from django.utils import timezone
 from django.contrib.auth  import login,authenticate, logout
@@ -18,7 +18,23 @@ def home(request):
 
 
 def signup_user(request):
-    if request.method == 'GET':
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request,'events.html')  # Redirigir a una URL de éxito
+    else:
+        form = UserForm()
+
+    return render(request, 'signup.html', {'form': form})
+
+
+
+
+
+
+    """
+     if request.method == 'GET':
         return render(request, 'signup.html', {'form': FormMember()})
     
     else:
@@ -26,40 +42,14 @@ def signup_user(request):
         form = FormMember(request.POST)
         
 
-        if form.is_valid():
-            nombre = form.cleaned_data['name']
-            edad = form.cleaned_data['age']
-            apodo = form.cleaned_data['nickname']
-            fecha_nacimiento = form.cleaned_data['happy_birthday']
-            pais = form.cleaned_data['country']
-            ciudad = form.cleaned_data['city']
-            estado_cpl = form.cleaned_data['cpl_status']
-            modo_juego = form.cleaned_data['mode_play']
-            reclutado = form.cleaned_data['recruited']
+        if request.POST['password1'] == request.POST['password2']:
 
-            # Verificar si el usuario está en la tabla de miembros eliminados
-            member_eliminated = Members_eliminated.objects.filter(nickname = apodo).first()
-            if member_eliminated:
-
-                # Restaurar el usuario eliminado
-                Members_eliminated.objects.filter()
-
-            if request.POST['password1'] == request.POST['password2']:
+            if form.is_valid():
+                 
+                user = User.objects.create_user(username=apodo, password=request.POST['password1'])
+                
                 try:
-                    # Crear el usuario usando el nickname como username
-                    user = User.objects.create_user(username=apodo, password=request.POST['password1'])
-                    
-                    miembro = Create_members(
-                        name=nombre,
-                        age=edad,
-                        nickname=apodo,
-                        happy_birthday=fecha_nacimiento,
-                        country=pais,
-                        city=ciudad,
-                        cpl_status=estado_cpl,
-                        mode_play=modo_juego,
-                        recruited=reclutado
-                        )
+                   
                     miembro.save()
                     login(request,user)
                     return redirect('home')
@@ -74,6 +64,10 @@ def signup_user(request):
             'form': form,
             'error': 'las contraseñas no coinciden'
         })
+    
+    
+    """
+   
     
 
 def login_user(request):
@@ -154,34 +148,31 @@ def delete_member(request):
 
 def restart_member(request):
     if request.method == 'POST':
-        nickname = request.POST.get('nickname')
+        
+   
+    
 
         try:
-            # Buscar el miembro eliminado por su nickname
-            member = Members_eliminated.objects.get(nickname=nickname)
+            nickname = request.POST.get('nickname')
+            
+            # Verificar si el usuario está en la tabla de miembros eliminados
+            member_eliminated = Members_eliminated.objects.filter(nickname =nickname).first()
+            print(nickname,request)
 
-            # Restaurar el miembro en la tabla Create_members
-            Create_members.objects.create(
-                name=member.name,
-                age=member.age,
-                nickname=member.nickname,
-                happy_birthday=member.happy_birthday,
-                country=member.country,
-                city=member.city,
-                cpl_status=member.cpl_status,
-                mode_play=member.mode_play,
-                recruited=member.recruited
-            )
+            if member_eliminated:
+                member_eliminated.delete()
 
-            # Eliminar el miembro de la tabla Members_eliminated
-            member.delete()
+            
+            else:
+                return render(request,'restart_members.html', {'error': 'Miembro no encontrado'})
 
-            # Redirigir a la lista de miembros eliminados con un mensaje de éxito
+    
+    
             return render(request, 'restart_members.html', {'success': 'Miembro restaurado exitosamente'})
         
-        except Members_eliminated.DoesNotExist:
+        except Members_eliminated as e:
             # Mostrar error si el miembro no se encuentra
-            return render(request, 'restart_members.html', {'error': 'Miembro no encontrado'})
+            return render(request, 'restart_members.html', {'error': str(e) })
 
     return render(request, 'restart_members.html')
     

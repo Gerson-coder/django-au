@@ -1,7 +1,8 @@
 from django import forms
+from django.contrib.auth.models import User
 from .models import Create_members, Create_subs
 
-class FormMember(forms.ModelForm):
+class UserForm(forms.ModelForm):
     password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'input'}),
         label='contraseña'
@@ -25,18 +26,33 @@ class FormMember(forms.ModelForm):
         fields = ['name', 'age', 'nickname', 'happy_birthday', 'country', 'city', 'cpl_status', 'mode_play', 'recruited']
 
         # Personalización de las etiquetas
-        labels = {
-            'name': 'Nombre',
-            'age': 'Edad',
-            'nickname': 'nickname',
-            'happy_birthday': 'Cumpleaños',
-            'country': 'País',
-            'city': 'Ciudad',
-            'cpl_status': 'Estado(Couple)',
-            'mode_play': 'Qué modo juegas',
-            'recruited': 'Reclutado por',
-        }
-        # falta añadir fecha de ingreso pero solo en la base de datos
+        
 
- 
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
+
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Las contraseñas no coinciden")
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        
+        user = User(
+            username=self.cleaned_data['nickname'],
+            email=self.cleaned_data.get('email', ''),
+            first_name=self.cleaned_data.get('name', ''),
+            last_name=self.cleaned_data.get('last_name', '')
+        )
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+
+        create_member = super().save(commit=False)
+        create_member.user = user
+        if commit:
+            create_member.save()
+        return create_member
     
