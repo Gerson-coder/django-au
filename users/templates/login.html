@@ -4,6 +4,11 @@
 
 {% block content %}
 <div class="container mt-5">
+
+    <video autoplay muted loop playsinline preload="metadata" id="background-video">    
+        <source src="{% static 'media/copia2.mp4' %}" type="video/mp4">
+        
+    </video>
     <div class="row justify-content-center">
         <div class="col-md-6 gothic-form">
             <h1 class="text-center gothic-text text-shadow-gothic">LOGIN</h1>
@@ -45,16 +50,18 @@
 
 <!-- Estilos personalizados -->
 <style>
-    body {
-        background-color: #ffffff;
-        background-image: url("{% static 'media/login.png' %}");
-        background-size: cover;
-        background-position: center;
-        color: #f8f9fa;
-    }
+   
+    #background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+    
+    object-fit: cover;
+    z-index: -1; /* Enviar el video al fondo */
+}
 
-  
-       
+
 </style>
 
 

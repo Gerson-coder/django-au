@@ -4,19 +4,13 @@
 {% block content %}
 <div class="container mt-5">
     <!-- Video Background -->
-    <video autoplay muted loop id="background-video">
-        <source src="{% static 'media/home.mp4' %}" type="video/mp4">
+    
+    <video autoplay muted loop playsinline preload="metadata" id="background-video">    
+        <source src="{% static 'media/comprimido.mp4' %}" type="video/mp4">
         Tu navegador no soporta video en HTML5.
     </video>
 
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="hero-content">
-            <h1>Bienvenidos a Village</h1>
-            <p>Sumérgete en el misterio y la oscuridad de nuestra familia.</p>
-        </div>
-    </div>
-
+   
     <!-- Carousel Section -->
     <div id="carouselExampleIndicators" class="carousel slide mb-5" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -57,6 +51,18 @@
     <link rel="stylesheet" href="{% static 'styles/home.css' %}">
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+    #background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+    
+    object-fit: cover;
+    z-index: -1; /* Enviar el video al fondo */
+}
+
+
+</style>
 
 {% endblock %}

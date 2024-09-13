@@ -1,7 +1,12 @@
 
     /* Background oscuro de tipo castillo o metalizado */
    
-  
+    .container {
+        position: relative; /* Para que el contenido se superponga al video de fondo */
+        z-index: 2; /* Asegura que el contenido esté por encima del fondo */
+        padding: 2px 0 ;
+        border-radius: 10px;
+    }
 
     /* Sombras y tipografía estilo gótico */
     .gothic-text {

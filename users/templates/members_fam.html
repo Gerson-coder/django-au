@@ -4,6 +4,12 @@
 
 {% block content %}
 <div class="container mt-5">
+
+    <video autoplay muted loop playsinline preload="metadata" id="background-video">    
+        <source src="{% static 'media/village42.mp4' %}" type="video/mp4">
+        
+    </video>
+
     <h2 class="text-center text-shadow-gothic text-white mb-4">Miembros Actuales</h2>
 
     <!-- Barra de búsqueda -->
@@ -60,14 +66,20 @@
 </script>
 
 <!-- Estilos personalizados inspirados en Resident Evil Village -->
-<style>
-    body {
-        background-color: #FFFFFF;
-        background-image: url("{% static 'media/members.jpg' %}");
-        background-size: cover;
-        background-position: center;
-    }
 
-    
+   <style>
+   
+   #background-video {
+   position: fixed;
+   top: 0;
+   left: 0;
+   
+   object-fit: cover;
+   z-index: -1; /* Enviar el video al fondo */
+}
+
+
 </style>
+    
+
 {% endblock %}
