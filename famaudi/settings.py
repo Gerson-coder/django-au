@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-6#j!(b!x*9uj6n(+2b*evk7fy5f%x-c@uh&qp4^fy-fnmhttdu
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'users.CreateUser'
 
 # Application definition
 
@@ -127,6 +127,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Media files (Uploaded by users)

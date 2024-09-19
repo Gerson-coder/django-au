@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load crispy_forms_tags %}
 
 {% block content %}
 <div class="text-shadow mt-5">
@@ -21,70 +20,112 @@
     <form method="POST" class="needs-validation dark-form" novalidate>
         {% csrf_token %}
         
+        <!-- Nombre de usuario -->
+        <div class="mb-3">
+            <label for="id_username" class="form-label gothic-label">Nombre de usuario</label>
+            {{ form.username }}
+            <div class="text-danger">
+                {{ form.username.errors }}
+            </div>
+        </div>
+
         <!-- Nombre -->
         <div class="mb-3">
-            <label for="id_name" class="form-label gothic-label"></label>
-            {{ form.name|as_crispy_field }}
+            <label for="id_first_name" class="form-label gothic-label">Nombre</label>
+            {{ form.first_name }}
+            <div class="text-danger">
+                {{ form.first_name.errors }}
+            </div>
         </div>
 
         <!-- Edad -->
         <div class="mb-3">
-            <label for="id_age" class="form-label gothic-label"></label>
-            {{ form.age|as_crispy_field }}
+            <label for="id_edad" class="form-label gothic-label">Edad</label>
+            {{ form.edad }}
+            <div class="text-danger">
+                {{ form.edad.errors }}
+            </div>
         </div>
 
         <!-- Nickname -->
         <div class="mb-3">
-            <label for="id_nickname" class="form-label gothic-label"></label>
-            {{ form.nickname|as_crispy_field }}
+            <label for="id_nickname" class="form-label gothic-label">Nickname</label>
+            {{ form.nickname }}
+            <div class="text-danger">
+                {{ form.nickname.errors }}
+            </div>
         </div>
 
         <!-- Fecha de Cumpleaños -->
         <div class="mb-3">
-            <label for="id_happy_birthday" class="form-label gothic-label"></label>
-            {{ form.happy_birthday|as_crispy_field }}
+            <label for="id_cumpleaños" class="form-label gothic-label">Cumpleaños</label>
+            {{ form.cumpleaños }}
+            <div class="text-danger">
+                {{ form.cumpleaños.errors }}
+            </div>
         </div>
 
         <!-- País -->
         <div class="mb-3">
-            <label for="id_country" class="form-label gothic-label"></label>
-            {{ form.country|as_crispy_field }}
+            <label for="id_pais" class="form-label gothic-label">País</label>
+            {{ form.pais }}
+            <div class="text-danger">
+                {{ form.pais.errors }}
+            </div>
         </div>
 
         <!-- Ciudad -->
         <div class="mb-3">
-            <label for="id_city" class="form-label gothic-label"></label>
-            {{ form.city|as_crispy_field }}
+            <label for="id_ciudad" class="form-label gothic-label">Ciudad</label>
+            {{ form.ciudad }}
+            <div class="text-danger">
+                {{ form.ciudad.errors }}
+            </div>
         </div>
 
-        <!-- Estado de Pareja -->
+        <!-- Estado civil -->
         <div class="mb-3">
-            <label for="id_cpl_status" class="form-label gothic-label"></label>
-            {{ form.cpl_status|as_crispy_field }}
+            <label for="id_estado_cpl" class="form-label gothic-label">Estado civil</label>
+            {{ form.estado_cpl }}
+            <div class="text-danger">
+                {{ form.estado_cpl.errors }}
+            </div>
         </div>
 
         <!-- Modo de Juego -->
         <div class="mb-3">
-            <label for="id_mode_play" class="form-label gothic-label"></label>
-            {{ form.mode_play|as_crispy_field }}
+            <label for="id_modo_de_juego" class="form-label gothic-label">Modo de juego</label>
+            {{ form.modo_de_juego }}
+            <div class="text-danger">
+                {{ form.modo_de_juego.errors }}
+            </div>
         </div>
 
-        <!-- Contraseña 1 -->
+        <!-- Contraseña -->
         <div class="mb-3">
-            <label for="id_password1" class="form-label gothic-label"></label>
-            {{ form.password1|as_crispy_field }}
+            <label for="id_password" class="form-label gothic-label">Contraseña</label>
+            {{ form.password }}
+            <div class="text-danger">
+                {{ form.password.errors }}
+            </div>
         </div>
 
-        <!-- Contraseña 2 -->
+        <!-- Confirmar contraseña -->
         <div class="mb-3">
-            <label for="id_password2" class="form-label gothic-label"></label>
-            {{ form.password2|as_crispy_field }}
+            <label for="id_password_confirm" class="form-label gothic-label">Repite la contraseña</label>
+            {{ form.password_confirm }}
+            <div class="text-danger">
+                {{ form.password_confirm.errors }}
+            </div>
         </div>
 
         <!-- Reclutado por -->
         <div class="mb-3">
-            <label for="id_recruited" class="form-label gothic-label"></label>
-            {{ form.recruited|as_crispy_field }}
+            <label for="id_reclutado_por" class="form-label gothic-label">Reclutado por</label>
+            {{ form.reclutado_por }}
+            <div class="text-danger">
+                {{ form.reclutado_por.errors }}
+            </div>
         </div>
 
         <!-- Botón de envío -->
@@ -97,14 +138,14 @@
 
 <style>
     #background-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    
-    
-    object-fit: cover;
-    z-index: -1; /* Enviar el video al fondo */
-}
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
 </style>
 
 {% endblock %}

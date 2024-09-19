@@ -17,6 +17,7 @@ urlpatterns = [
     path('delete-member/', views.delete_member, name='delete_member'),
     path('autocomplete-nickname/', views.autocomplete_nickname, name='autocomplete_nickname'),
     path('restart/',views.restart_member, name='restart_member'),
+    path('dashboard/',views.dashboard,name= 'dashboard')
 ]
 
 if settings.DEBUG:

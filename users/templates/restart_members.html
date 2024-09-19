@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <div class="container mt-5">
     <h2 class="mb-4">Restaurar Miembro Eliminado</h2>
@@ -22,4 +22,33 @@
     <div class="alert alert-success mt-3">{{ success }}</div>
     {% endif %}
 </div>
+
+
+
+<!-- Autocomplete Script -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script>
+    $(function() {
+        $("#nickname").autocomplete({
+            source: "{% url 'autocomplete_nickname' %}",
+            select: function(event, ui) {
+                $('#nickname').val(ui.item.value);
+            }
+        });
+    });
+</script>
+
+<!-- Agregamos algo de estilo adicional inspirado en Resident Evil Village -->
+<style>
+    body {
+    background-color: #fff;
+    background-image: url("{% static 'media/restart_member.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+ </style>
 {% endblock %}

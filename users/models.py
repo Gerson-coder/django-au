@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils import timezone
 
 # Create your models here.
@@ -9,33 +9,38 @@ from django.utils import timezone
 
 
 class  Create_subs(models.Model):
-    name = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100)
     nickname = models.CharField(max_length=100)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  null=True)
+
 
     def __str__(self):
        return self.nickname
+
 
    
 
 class CreateUser(AbstractUser):
     edad = models.PositiveIntegerField(null=True)
-    nickname = models.CharField(max_length=100,null=True)
+    nickname = models.CharField(max_length=100, null=True)
     cumpleaños = models.DateTimeField(null=True)
     pais = models.CharField(max_length=100)
     ciudad = models.CharField(max_length=100)
     estado_cpl = models.CharField(max_length=100)
     modo_de_juego = models.CharField(max_length=100)
-    reclutado_por = models.ForeignKey('Create_subs', on_delete=models.CASCADE,null=True)
+    reclutado_por = models.ForeignKey('Create_subs', on_delete=models.CASCADE, null=True)
     is_active = models.BooleanField(default=True)
-    is_sub_leader = models.BooleanField(default=False)
-    def is_sub(self):
-        return self.reclutado_por is not None  # Si el usuario tiene un reclutador, es un sub
+    is_subleader = models.BooleanField(default=False)  # Nuevo campo para identificar si es sublíder
 
     def __str__(self):
-      
         if self.nickname:
             return f"{self.username} - {self.reclutado_por.nickname}"
         return self.username
+
+    def save(self, *args, **kwargs):
+        if not self.username and self.nickname:
+            self.username = self.first_name
+        super().save(*args, **kwargs)
 
 class Members_eliminated(models.Model):
     nombre = models.CharField(max_length=100)

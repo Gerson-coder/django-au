@@ -5,13 +5,9 @@
 {% block content %}
 <div class="container mt-5">
 
-    <video autoplay muted loop playsinline preload="metadata" id="background-video">    
-        <source src="{% static 'media/village42.mp4' %}" type="video/mp4">
-        
-    </video>
-
+    
     <h2 class="text-center text-shadow-gothic text-white mb-4">Miembros Actuales</h2>
-
+    
     <!-- Barra de búsqueda -->
     <div class="input-group mb-3">
         <span class="input-group-text bg-dark text-white" id="basic-addon1">Buscar por Nickname</span>
@@ -33,9 +29,10 @@
             {% for member in members_fam %}
             <tr class="text-shadow">
                 <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ member.name }}</td>
+                <td>{{ member.first_name }}</td>
                 <td>{{ member.nickname }}</td>
-                <td>{{ member.recruited.nickname }}</td>
+                <!-- Verifica que recruited sea una relación válida -->
+                <td>{% if member.reclutado_por %}{{ member.reclutado_por }}{% else %}N/A{% endif %}</td>
                 <td>{{ member.date_joined|date:"d/m/Y H:i" }}</td>
             </tr>
             {% empty %}
@@ -67,17 +64,17 @@
 
 <!-- Estilos personalizados inspirados en Resident Evil Village -->
 
-   <style>
-   
-   #background-video {
-   position: fixed;
-   top: 0;
-   left: 0;
-   
-   object-fit: cover;
-   z-index: -1; /* Enviar el video al fondo */
-}
 
+
+ <style>
+    body {
+    background-color: #fff;
+    background-image: url("{% static 'media/members_fam.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+ </style>
 
 </style>
     

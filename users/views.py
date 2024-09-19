@@ -15,15 +15,6 @@ from django.core.exceptions import PermissionDenied
 def home(request):
     return render(request, 'home.html')
 
-def signup_user(request):
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, 'events.html')  # Redirigir a una URL de éxito
-    else:
-        form = UserForm()
-    return render(request, 'signup.html', {'form': form})
 
 def signup_user(request):
     if request.method == 'GET':
@@ -31,22 +22,29 @@ def signup_user(request):
         return render(request, 'signup.html', {'form': UserForm()})
     else:
         form = UserForm(request.POST)
+        print('Datos POST recibidos:', request.POST) 
         if form.is_valid():
             try:
+                # Depuración: Imprimir datos limpios del formulario
+                print('Datos limpios del formulario:', form.cleaned_data)
+                
                 user = form.save(commit=False)  # No guarda en la base de datos aún
                 user.set_password(form.cleaned_data['password'])  # Encripta la contraseña
                 user.save()
 
                 user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
                 if user is None:
-                    return render(request, 'signup.html', {'error': 'Ha ocurrido un error intentelo de nuevo'})
+                    print('Error en la autenticación')  # Depurar autenticación fallida
+                    return render(request, 'signup.html', {'form': form, 'error': 'Ha ocurrido un error, inténtelo de nuevo'})
                 else:
                     login(request, user)
                     return redirect('home')
             except Exception as e:
-                print(f'Error al guardar el formulario {e}')
+                print(f'Error al guardar el formulario: {e}')
                 return render(request, 'signup.html', {'form': form, 'error': 'Error en uno de los campos'})
         else:
+            # Depuración: Imprimir errores del formulario
+            print('Errores del formulario:', form.errors)
             return render(request, 'signup.html', {'form': form, 'error': 'Error al registrarse'})
 
 def login_user(request):
@@ -60,14 +58,14 @@ def login_user(request):
             return render(request, 'login.html', {'form': AuthenticationForm, 'error': 'El usuario o la contraseña es incorrecta'})
         else:
             login(request, user)
-            return redirect('events')
+            return redirect('home')
 
 def logout_user(request):
     logout(request)
     return redirect('home')
 
 def members_fam(request):
-    members = CreateUser.objects.all()
+    members = CreateUser.objects.filter(is_active = True)
     return render(request, 'members_fam.html', {'members_fam': members})
 
 def members_eliminated(request):
@@ -75,26 +73,23 @@ def members_eliminated(request):
     return render(request, 'members_eliminated.html', {'members_eliminated': members})
 
 def delete_member(request):
-    if not request.user.is_authenticated:
-        messages.error(request, 'Debes estar autenticado para realizar esta acción.')
-        return redirect('login')
-
-    if not request.user.is_sub():
-        raise PermissionDenied("No tienes permiso para eliminar miembros.")
-
     if request.method == 'POST':
+        print(request.POST)
         form = ManageUserForm(request.POST)
         if form.is_valid():
-            if form.delete_user():
-                messages.success(request, 'El usuario ha sido eliminado correctamente.')
+            
+            if form.delete_user():  # Este método se encargará de eliminar al usuario
+                return redirect('members_eliminated')  # Redirige a la página que muestra los eliminados
             else:
                 messages.error(request, 'Hubo un error al intentar eliminar el usuario.')
         else:
             messages.error(request, 'Formulario inválido. Por favor revisa los campos.')
     else:
+        
         form = ManageUserForm()
+        
 
-    return render(request, 'delete_member.html', {'form': form})
+        return render(request, 'delete_member.html', {'form': form})
 
 def restart_member(request):
     if request.method == 'GET':
@@ -103,7 +98,7 @@ def restart_member(request):
     else:
         form = ManageUserForm(request.POST)
         if form.is_valid():
-            if form.restart_user():
+            if form.restore_user():
                 return redirect('members_fam')
             else:
                 return render(request, 'restart_members.html', {'form': form, 'error': 'El nickname no existe o ya fue restaurado'})

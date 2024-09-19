@@ -6,11 +6,12 @@ from .models import CreateUser, Members_eliminated
 
 
 class UserForm(forms.ModelForm):
+    
 
 
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
     password_confirm = forms.CharField(label='Repite la contraseña',widget=forms.PasswordInput)
-    cumpleaños = forms.DateField(label='Cumpleaños', widget=forms.DateInput(attrs={'type':'date'}))
+    cumpleaños = forms.DateTimeField(label='Cumpleaños', widget=forms.DateInput(attrs={'type':'date'}))
     nickname = forms.CharField(label='Nickname')
     edad = forms.IntegerField(label= 'Edad')
 
@@ -50,12 +51,12 @@ class UserForm(forms.ModelForm):
     def clean_password_confirm(self):
         password = self.cleaned_data.get('password')
         password_confirm = self.cleaned_data.get('password_confirm')
-        if password and password_confirm:
-            if len(password) and len(password_confirm) < 6:
-                raise ValidationError(" la contraseña tiene que tener un mínimo de 6 digitos") 
 
-        if password and password_confirm and password != password_confirm:
-            raise ValidationError("Las contraseñas no coinciden.")
+        if password and password_confirm:
+            if len(password) < 6:
+                raise ValidationError("La contraseña debe tener al menos 6 caracteres.")
+            if password != password_confirm:
+                raise ValidationError("Las contraseñas no coinciden.")
         return password_confirm
         
 
@@ -84,11 +85,13 @@ class UserForm(forms.ModelForm):
         if not cumpleaños:
             raise ValidationError("El campo cumpleaños es obligatorio.")
         return cumpleaños
+    
+
 
 
 class ManageUserForm(forms.Form):
     nickname = forms.CharField(max_length=100)
-    razon = forms.CharField(widget=forms.Textarea, label="Motivo de la eliminación", required=False)
+    razon = forms.CharField(widget=forms.Textarea,  required=False)
 
     def delete_user(self):
         nickname = self.cleaned_data.get('nickname')
@@ -100,7 +103,7 @@ class ManageUserForm(forms.Form):
             # Proporcionar un valor predeterminado para cumpleaños si es None
             cumpleaños = user.cumpleaños if user.cumpleaños else timezone.now()
 
-            # Guarda el usuario en Members_eliminated antes de eliminarlo
+            # Guarda el usuario en Members_eliminated
             Members_eliminated.objects.create(
                 nombre=user.first_name,
                 edad=user.edad,
@@ -109,59 +112,52 @@ class ManageUserForm(forms.Form):
                 pais=user.pais,
                 ciudad=user.ciudad,
                 estado_cpl=user.estado_cpl,
-                username=user.username,  # Guardar el nombre de usuario
-                password=user.password,  # Guardar la contraseña encriptada
                 modo_de_juego=user.modo_de_juego,
                 razon=razon,
                 reclutado_por=user.reclutado_por,
                 fecha_elimiado=timezone.now(),
-                is_active=False  # Marcar como inactivo
+                is_active=False  # Marcar como inactivo en la tabla de eliminados
             )
-            user.delete()
-            print(f"Usuario {nickname} eliminado exitosamente.")
+
+            # Desactivar el usuario en CreateUser en lugar de eliminarlo
+            user.is_active = False
+            user.save()  # Guarda el cambio en is_active
+
+            print(f"Usuario {nickname} desactivado exitosamente.")
             return True
         except CreateUser.DoesNotExist:
             print(f"Usuario {nickname} no encontrado en CreateUser.")
             return False
-
     def restore_user(self):
         nickname = self.cleaned_data.get('nickname')
 
-        try:
-            user = Members_eliminated.objects.get(nickname=nickname)
+    # Intentar filtrar por nickname en la tabla de eliminados
+        users = Members_eliminated.objects.filter(nickname=nickname)
 
-            # Verificar si el usuario ya existe en CreateUser
-            if CreateUser.objects.filter(nickname=user.nickname).exists():
-                print(f"Usuario {user.nickname} ya existe en CreateUser.")
-                return False
-
-            if not user.nickname or not user.edad or not user.cumpleaños or not user.nombre:
-                print("Campos requeridos faltantes.")
-                return False
-
-            # Crear usuario en CreateUser
-            try:
-                CreateUser.objects.create(
-                    first_name=user.nombre,
-                    edad=user.edad,
-                    nickname=user.nickname,
-                    cumpleaños=user.cumpleaños,
-                    pais=user.pais,
-                    ciudad=user.ciudad,
-                    estado_cpl=user.estado_cpl,
-                    username=user.username,  # Restaurar el nombre de usuario
-                    password=user.password,  # Restaurar la contraseña encriptada
-                    modo_de_juego=user.modo_de_juego,
-                    reclutado_por=user.reclutado_por,
-                    is_active=True  # Marcar como activo
-                )
-                print(f"Usuario {user.nickname} restaurado exitosamente.")
-            except Exception as e:
-                print(f"Error al restaurar usuario: {e}")
-                return False
-
-            user.delete()  # Eliminar el usuario de Members_eliminated
-            return True
-        except Members_eliminated.DoesNotExist:
+        if users.count() > 1:
+            print(f"Se encontraron múltiples usuarios con el nickname {nickname}.")
+        # Tomar el usuario más reciente basado en la fecha de eliminación
+            user = users.order_by('-fecha_elimiado').first()
+        elif users.count() == 1:
+            user = users.first()
+        else:
             print(f"Usuario {nickname} no encontrado en Members_eliminated.")
             return False
+
+    # Verificar si el usuario ya existe en CreateUser
+        existing_user = CreateUser.objects.filter(nickname=user.nickname).first()
+        if existing_user:
+        # Si el usuario ya existe, simplemente cambiar is_active a True
+            existing_user.is_active = True
+            existing_user.save()  # Guardar los cambios
+            print(f"Usuario {existing_user.nickname} ha sido reactivado exitosamente.")
+        else:
+            # Si no existe, imprimir mensaje
+            print(f"Usuario {user.nickname} no existe en CreateUser.")
+            return False
+
+    # Eliminar el usuario de la tabla Members_eliminated después de restaurar
+        user.delete()
+
+        return True
+    
