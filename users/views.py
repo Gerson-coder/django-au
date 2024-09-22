@@ -25,16 +25,16 @@ def signup_user(request):
         print('Datos POST recibidos:', request.POST) 
         if form.is_valid():
             try:
-                # Depuración: Imprimir datos limpios del formulario
+                
                 print('Datos limpios del formulario:', form.cleaned_data)
                 
-                user = form.save(commit=False)  # No guarda en la base de datos aún
-                user.set_password(form.cleaned_data['password'])  # Encripta la contraseña
+                user = form.save(commit=False)  
+                user.set_password(form.cleaned_data['password'])  
                 user.save()
 
                 user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
                 if user is None:
-                    print('Error en la autenticación')  # Depurar autenticación fallida
+                    print('Error en la autenticación')  
                     return render(request, 'signup.html', {'form': form, 'error': 'Ha ocurrido un error, inténtelo de nuevo'})
                 else:
                     login(request, user)
@@ -43,7 +43,7 @@ def signup_user(request):
                 print(f'Error al guardar el formulario: {e}')
                 return render(request, 'signup.html', {'form': form, 'error': 'Error en uno de los campos'})
         else:
-            # Depuración: Imprimir errores del formulario
+            
             print('Errores del formulario:', form.errors)
             return render(request, 'signup.html', {'form': form, 'error': 'Error al registrarse'})
 

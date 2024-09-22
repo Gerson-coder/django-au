@@ -157,17 +157,3 @@ tr {
     border: 1px solid #444; /* Cambia a un borde más visible para asegurarte de que la tabla está correctamente renderizada */
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .dashboard-container {
-        width: 95%;
-    }
-
-    .action-buttons {
-        flex-direction: column;
-    }
-
-    .btn-action {
-        width: 100%;
-    }
-}

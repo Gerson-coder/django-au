@@ -38,8 +38,6 @@ class UserForm(forms.ModelForm):
         for field in self.fields.values():
             field.error_messages = {'required': 'Este campo es necesario'}
             
-                
-
 
     def clean_username(self):
 
@@ -59,7 +57,6 @@ class UserForm(forms.ModelForm):
                 raise ValidationError("Las contraseñas no coinciden.")
         return password_confirm
         
-
     def clean_nickname(self):
         nickname = self.cleaned_data.get('nickname')
         """
